@@ -1,0 +1,41 @@
+﻿@model Seller
+
+<h1>Details</h1>
+<br />
+<a asp-action="Index">Back to list</a>
+<hr />
+
+<dl class="list-group">
+    <dt>
+        @Html.DisplayNameFor(x => x.Name)
+    </dt>
+    <dd>
+        @Html.DisplayFor(x => x.Name)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(x => x.Email)
+    </dt>
+    <dd>
+        @Html.DisplayFor(x => x.Email)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(x => x.BaseSalary)
+    </dt>
+    <dd>
+        @Html.DisplayFor(x => x.BaseSalary)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(x => x.BirthDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(x => x.BirthDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(x => x.Department)
+    </dt>
+    <dd>
+        @Html.DisplayFor(x => x.Department.Name)
+    </dd>
+</dl>
+<hr />
+<a asp-action="Edit" class="btn btn-primary">Edit</a>

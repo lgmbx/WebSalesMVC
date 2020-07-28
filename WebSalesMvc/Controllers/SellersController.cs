@@ -38,10 +38,62 @@ namespace WebSalesMvc.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id) {
-            return View(await _sellerService.FindById(id));
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id) {
+            
+            if(id == null) {
+                return NotFound();
+            }
+            var obj = await _sellerService.FindById(id);
+
+            if(obj == null) {
+                return NotFound();
+            }
+
+            return View(obj);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id) {
+            await _sellerService.Remove(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id) {
+            
+            if (id == null) {
+                return NotFound();
+            }
+            var obj = await _sellerService.FindById(id);
+
+            if (obj == null) {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id) {
+            
+            var seller = await _sellerService.FindById(id);
+            var deps = await _departmentService.FindAllAsync();
+            
+            var ViewForm = new SellerFormViewModel { Seller = seller, Departments = deps };
+            return View(ViewForm);
+            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(SellerFormViewModel sellerForm) {
+            var seller = sellerForm.Seller;
+            await _sellerService.Update(seller);
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }

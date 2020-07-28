@@ -26,15 +26,21 @@ namespace WebSalesMvc.Services {
         }
 
         //Find by Id
-        public async Task<Seller> FindById(int id) {
+        public async Task<Seller> FindById(int? id) {
             return await _context.Seller.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        //Remove
         public async Task Remove(int id) {
             var obj = _context.Seller.Find(id);
-            _context.Remove(obj);
+            _context.Seller.Remove(obj);
             await _context.SaveChangesAsync();
         }
 
+        //Update
+        public async Task Update(Seller obj) {
+            _context.Seller.Update(obj);
+            await _context.SaveChangesAsync();
+        }
     }
 }
