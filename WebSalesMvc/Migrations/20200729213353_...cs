@@ -4,10 +4,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebSalesMvc.Migrations
 {
-    public partial class otherentities : Migration
+    public partial class _ : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Department",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Department", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Seller",
                 columns: table => new
@@ -50,7 +63,7 @@ namespace WebSalesMvc.Migrations
                         column: x => x.SellerId,
                         principalTable: "Seller",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -71,6 +84,9 @@ namespace WebSalesMvc.Migrations
 
             migrationBuilder.DropTable(
                 name: "Seller");
+
+            migrationBuilder.DropTable(
+                name: "Department");
         }
     }
 }

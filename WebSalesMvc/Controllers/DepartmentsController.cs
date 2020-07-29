@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebSalesMvc.Data;
 using WebSalesMvc.Models;
+using WebSalesMvc.Services.Exceptions;
 
 namespace WebSalesMvc.Controllers
 {
@@ -139,9 +140,15 @@ namespace WebSalesMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var department = await _context.Department.FindAsync(id);
-            _context.Department.Remove(department);
-            await _context.SaveChangesAsync();
+            try {
+                var department = await _context.Department.FindAsync(id);
+                _context.Department.Remove(department);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e) {
+                throw new IntegrityException(e.Message);
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 

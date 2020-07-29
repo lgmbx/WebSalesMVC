@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebSalesMvc.Data;
 using WebSalesMvc.Models;
+using WebSalesMvc.Services.Exceptions;
 
 namespace WebSalesMvc.Services {
     public class SellerService {
@@ -16,7 +17,7 @@ namespace WebSalesMvc.Services {
 
         //Find all
         public async Task<List<Seller>> FindAllAsync() {
-            return await _context.Seller.ToListAsync();
+            return await _context.Seller.Include(x => x.Department).ToListAsync();
         }
 
         //Insert
@@ -32,15 +33,30 @@ namespace WebSalesMvc.Services {
 
         //Remove
         public async Task Remove(int id) {
-            var obj = _context.Seller.Find(id);
-            _context.Seller.Remove(obj);
-            await _context.SaveChangesAsync();
+            try {
+                var obj = _context.Seller.Find(id);
+                _context.Seller.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException) {
+                throw new IntegrityException("Seller with linked sale cannot be removed");
+            }
+           
         }
 
         //Update
         public async Task Update(Seller obj) {
-            _context.Seller.Update(obj);
-            await _context.SaveChangesAsync();
+            if (!_context.Seller.Any(x => x.Id == obj.Id)) {
+                throw new NotFoundException("Not Found");
+            }
+            try {
+                _context.Seller.Update(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e) {
+                throw new DbConcurrencyException(e.Message);
+            }
+           
         }
     }
 }

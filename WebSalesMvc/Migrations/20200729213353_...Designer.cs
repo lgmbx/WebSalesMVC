@@ -9,8 +9,8 @@ using WebSalesMvc.Data;
 namespace WebSalesMvc.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200727140336_other entities")]
-    partial class otherentities
+    [Migration("20200729213353_..")]
+    partial class _
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
