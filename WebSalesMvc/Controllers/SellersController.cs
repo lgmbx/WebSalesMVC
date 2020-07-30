@@ -46,7 +46,7 @@ namespace WebSalesMvc.Controllers {
                 return View(viewModel);
             }
             var seller = sellerForm.Seller;
-            await _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
         #endregion
@@ -58,7 +58,7 @@ namespace WebSalesMvc.Controllers {
             if(id == null) {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
             }
-            var obj = await _sellerService.FindById(id);
+            var obj = await _sellerService.FindByIdAsync(id);
 
             if(obj == null) {
                 return RedirectToAction(nameof(Error), new { message = "object not found!" });
@@ -72,7 +72,7 @@ namespace WebSalesMvc.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id) {
             try {
-                await _sellerService.Remove(id);
+                await _sellerService.RemoveAsync(id);
 
             }
             catch (IntegrityException e ) {
@@ -92,7 +92,7 @@ namespace WebSalesMvc.Controllers {
             if (id == null) {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
             }
-            var obj = await _sellerService.FindById(id);
+            var obj = await _sellerService.FindByIdAsync(id);
 
             if (obj == null) {
                 return RedirectToAction(nameof(Error), new { message = "object not found!" });
@@ -111,7 +111,7 @@ namespace WebSalesMvc.Controllers {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
             }
             
-            var seller = await _sellerService.FindById(id);
+            var seller = await _sellerService.FindByIdAsync(id);
             if (seller == null) {
                 return RedirectToAction(nameof(Error), new { message = "object not found!" });
             }
@@ -137,7 +137,7 @@ namespace WebSalesMvc.Controllers {
             }
             var seller = sellerForm.Seller;
             try {
-                await _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
             }
             catch (DBConcurrencyException e ) {
                 return RedirectToAction(nameof(Error), new { message = e.Message });

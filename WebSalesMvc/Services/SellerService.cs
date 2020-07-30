@@ -21,18 +21,18 @@ namespace WebSalesMvc.Services {
         }
 
         //Insert
-        public async Task Insert(Seller obj) {
+        public async Task InsertAsync(Seller obj) {
             _context.Seller.Add(obj);
             await _context.SaveChangesAsync();
         }
 
         //Find by Id
-        public async Task<Seller> FindById(int? id) {
+        public async Task<Seller> FindByIdAsync(int? id) {
             return await _context.Seller.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         //Remove
-        public async Task Remove(int id) {
+        public async Task RemoveAsync(int id) {
             try {
                 var obj = _context.Seller.Find(id);
                 _context.Seller.Remove(obj);
@@ -45,7 +45,7 @@ namespace WebSalesMvc.Services {
         }
 
         //Update
-        public async Task Update(Seller obj) {
+        public async Task UpdateAsync(Seller obj) {
             if (!_context.Seller.Any(x => x.Id == obj.Id)) {
                 throw new NotFoundException("Not Found");
             }
